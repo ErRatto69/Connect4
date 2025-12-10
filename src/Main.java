@@ -1,6 +1,15 @@
 public class Main {
     public static void main(String[] args) {
-    
-        GameBoard gb = new GameBoard();
+        Game game = new Game();
+        game.initialize();
+
+        boolean playing = true;
+
+//        game.play();
+
+//        while(playing){
+//
+//        }
+
     }
 }

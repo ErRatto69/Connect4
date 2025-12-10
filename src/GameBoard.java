@@ -7,16 +7,14 @@ public class GameBoard{
     private final int ROWS = 6;
 
     private List<List<Player>> board;
-    private Player[] players;
     private int turn;
 
-    public GameBoard(Player... players) {
+    public GameBoard() {
         board = new ArrayList<>();
         for (int i = 0; i < COLUMNS; i++) {
             board.add(new ArrayList<>());
         }
 
-        this.players = players;
         this.turn = 0;
     }
 }
