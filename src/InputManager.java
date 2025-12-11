@@ -52,6 +52,61 @@ public class InputManager{
         }
         System.out.print("\nColor: ");
     }
+    public int readInteger(int min, int max) {
+        int value;
+        while (true) {
+            while (!scanner.hasNextInt()) {
+                System.err.println("Per favore, inserisci un numero valido.");
+                scanner.next();
+            }
+            value = scanner.nextInt();
+            scanner.nextLine();
+
+            if (value >= min && value <= max) {
+                return value;
+            } else {
+                System.err.println("Inserisci un numero tra " + min + " e " + max);
+            }
+        }
+    }
+
+    public int getMatchesNumber(){
+        int number;
+        System.out.println("Please enter an odd number of matches [MAX 15]:");
+        while (!scanner.hasNext() || (number =  scanner.nextInt()) < 1 ||  number > 15 || number%2==0 ) {
+            System.err.println("Insert a valid number, must be between 1 and 15 and must be odd");
+            System.out.println("Please enter an odd number of matches [MAX 15]:");
+            scanner.nextLine();
+        }
+        return number;
+    }
+
+    public int getIntValue(String name,int defaultValue, int max, int min, boolean indent) {
+        int number;
+
+        while (true) {
+            System.out.print((indent ? "\t" : "") + name+ " [Default: " + defaultValue + "]:");
+
+            String input = scanner.nextLine().trim();
+
+            if (input.isEmpty()) {
+                return defaultValue;
+            }
+
+            if (input.matches("[0-9]+")) {
+
+                number = Integer.parseInt(input);
+
+                if (number >= min && number <= max) {
+                    return number;
+                } else {
+                    System.err.println((indent ? "\t" : "") + "Insert a valid number between included "+min+" and "+max+".");
+                }
+            } else {
+                System.err.println((indent ? "\t" : "") + "Invalid input. Please enter a numeric value (no letters).");
+            }
+        }
+    }
 
     public void release (){
         scanner.close();

@@ -16,6 +16,10 @@ public class Game {
 
     private InputManager inputManager;
 
+    private int matchesNumber;
+    private int columns;
+    private int rows;
+
 
     public Game()
     {
@@ -26,10 +30,14 @@ public class Game {
 
     public void play()
     {
-
+        for (int i = 0; i < matchesNumber; i++) {
+            Match match = new Match(this.columns, this.rows, players);
+            matches.add(match);
+        }
     }
 
     public void initialize(){
+
         boolean addingPlayers = true;
 
         while(addingPlayers){
@@ -73,6 +81,10 @@ public class Game {
             player.setSymbol(symbol);
             player.setColor(color);
         }
+        this.matchesNumber = inputManager.getMatchesNumber();
+        System.out.println("Board size:");
+        this.columns = inputManager.getIntValue("Columns",7,30,5, true);
+        this.rows = inputManager.getIntValue("Rows",6, 30,5, true);
     }
 
     private boolean isPlayerUsernameTaken(String name) {
