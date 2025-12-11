@@ -1,28 +1,53 @@
+import Utility.ConsoleColors;
 import java.util.List;
 
 public class Match {
     public GameBoard board;
-    private Player winner;
     private List<Player> players;
     private InputManager inputManager;
+    private boolean running;
 
-    public Match(int columns, int rows, List<Player> players) {
-        this.board = new  GameBoard(columns, rows);
+    public Match(int columns, int rows, List<Player> players, InputManager inputManager) {
+        this.board = new GameBoard(columns, rows);
         this.players = players;
-        this.inputManager = new InputManager();
-        playTurn();
+        this.inputManager = inputManager;
+        this.running = true;
+        playMatch();
     }
 
-    public void playTurn() {
-        for(Player player : players) {
-            System.out.println(board.getBoardString());
-            System.out.println(player.getUsername()+" enter your move:");
-            int column = inputManager.getIntValue("Column",0, board.getColumns(), 0,true);
-            while(board.isColumnFull(column)) {
-                System.err.println("That column is full");
-                column = inputManager.getIntValue("Column",0, board.getColumns(), 0,true);
+    private void playMatch() {
+        while (running) {
+            for (Player player : players) {
+                System.out.println(board.getBoardString());
+                System.out.println("Turn of " + player.getUsername() + " (" + player.getSymbol() + ")");
+
+                int column = 0;
+                boolean validMove = false;
+
+                while (!validMove) {
+                    int inputCol = inputManager.getIntValue("Column", 1, 1, board.getColumns(), true);
+                    column = inputCol - 1;
+
+                    if (!board.isColumnFull(column)) {
+                        validMove = true;
+                    } else {
+                        System.err.println("That column is full! Choose another one.");
+                    }
+                }
+
+                board.addChecker(player, column);
+
+                boolean full = true;
+                for(int c=0; c<board.getColumns(); c++){
+                    if(!board.isColumnFull(c)) { full = false; break; }
+                }
+                if(full){
+                    System.out.println(board.getBoardString());
+                    ConsoleColors.println("DRAW! No more moves.", ConsoleColors.Colors.YELLOW);
+                    running = false;
+                    break;
+                }
             }
-            board.addChecker(player, column);
         }
     }
 }
