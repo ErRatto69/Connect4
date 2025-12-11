@@ -1,3 +1,5 @@
+import Utility.ConsoleColors;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,32 +30,76 @@ public class Game {
     }
 
     public void initialize(){
-        System.out.println("Setting up players...");
-        System.out.println("Type '$' to stop creating players");
         boolean addingPlayers = true;
+
         while(addingPlayers){
-            System.out.println("Player "+(players.size()+1));
+            System.out.println("Player "+(players.size()+1)+":");
             String name = inputManager.getPlayerName();
-            while(name.equals("$")){
-                if (players.size()>=2){
+
+            if(name.isEmpty()){
+                if (players.size() >= 2){
+                    addingPlayers = false;
                     break;
+                }else{
+                    System.err.println("There must be at least 2 players");
                 }
-                System.out.println("Name must be different from '$'");
-                name = inputManager.getPlayerName();
             }
-            if(players.size() >= 2 && name.equals("$")){
-                addingPlayers = false;
+
+            if (isPlayerUsernameTaken(name)) {
+                ConsoleColors.println("Username '" + name + "' already used. Choose another one.", ConsoleColors.Colors.RED);
+            } else {
+                Player player = new Player(name);
+                players.add(player);
+                ConsoleColors.println("Player " + name + " added!", ConsoleColors.Colors.GREEN);
             }
-            Player player = new Player(name);
-            players.add(player);
+
         }
         for(Player player : players){
-            System.out.println("Setting symbol and color for "+player.getUsername());
-            char symbol = inputManager.getPlayerCharacter();
-//            String color = inputManager.getPlayerColor();
+            System.out.print("Setting symbol and color for ");
+            ConsoleColors.print(player.getUsername()+"\n", ConsoleColors.Colors.MAGENTA);
 
-            player.setCheckerCharacter(symbol);
+            char symbol = inputManager.getPlayerCharacter();
+            while(isPlayerSymbolTaken(symbol)){
+                ConsoleColors.println("Symbol '" + symbol + "' already used. Choose another one.", ConsoleColors.Colors.RED);
+                symbol = inputManager.getPlayerCharacter();
+            }
+
+            ConsoleColors.Colors color = ConsoleColors.Colors.fromInt(inputManager.getPlayerColor());
+            while (isPlayerColorTaken(color)){
+                ConsoleColors.println("Color '" + color.name() + "' already used. Choose another one.", ConsoleColors.Colors.RED);
+                color = ConsoleColors.Colors.fromInt(inputManager.getPlayerColor());
+            }
+
+            player.setSymbol(symbol);
+            player.setColor(color);
         }
+    }
+
+    private boolean isPlayerUsernameTaken(String name) {
+        for (Player player : players) {
+            if (player.getUsername().equalsIgnoreCase(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isPlayerSymbolTaken(char symbol) {
+        for (Player player : players) {
+            if (player.getSymbol() == symbol) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isPlayerColorTaken(ConsoleColors.Colors color) {
+        for (Player player : players) {
+            if (player.getColor() == color) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public InputManager getInputManager() {

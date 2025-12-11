@@ -1,9 +1,11 @@
+import Utility.ConsoleColors;
+
 import java.awt.Color;
 
 public class Player{
     private String username;
-    private Color color;
-    private char checkerCharacter;
+    private ConsoleColors.Colors color;
+    private char symbol;
 
     public Player(String username) {
         this.username = username;
@@ -17,19 +19,19 @@ public class Player{
         this.username = username;
     }
 
-    public Color getColor() {
+    public ConsoleColors.Colors getColor() {
         return color;
     }
 
-    public void setColor(Color color) {
+    public void setColor(ConsoleColors.Colors color) {
         this.color = color;
     }
 
-    public char getCheckerCharacter() {
-        return checkerCharacter;
+    public char getSymbol() {
+        return symbol;
     }
 
-    public void setCheckerCharacter(char checkerCharacter) {
-        this.checkerCharacter = checkerCharacter;
+    public void setSymbol(char symbol) {
+        this.symbol = symbol;
     }
 }
