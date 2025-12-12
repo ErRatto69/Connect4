@@ -1,42 +1,95 @@
+import Utility.ConsoleColors;
 import java.util.Scanner;
 
-public class InputManager{
-    public static final String[] COLOR_LABELS = {"Red", "Green", "Yellow", "Blu", "Mangenta","Cyan","White"};
-    public Scanner scanner;
-    InputManager(){
-        scanner = new Scanner(System.in);
+public class InputManager {
+    public static final String[] COLOR_LABELS = {
+            "Red", "Green", "Yellow", "Blue", "Magenta", "Cyan", "White"
+    };
+    private final Scanner scanner;
+
+    public InputManager() {
+        this.scanner = new Scanner(System.in);
     }
-    
-    public char getPlayerCharacter(){
-        System.out.println("Please insert a character who you wanna play in this game");
+
+    public char getPlayerCharacter() {
+        System.out.println("Please insert a character (symbol) for this game:");
         String input;
-        while(!scanner.hasNext() || (input = scanner.next()).length() != 1 || input == " "){
-            System.err.println("Cannot insert a word longer than a character");
-            System.out.println("Again: please insert a single character othr than space");
-            scanner.nextLine();
-        }
-        return input.charAt(0);
-    }
-    public String getPlayerName(){
-        return scanner.next();
-    }
-    public int getColor(){
-        int color;
-        while (!scanner.hasNext() || (color =  scanner.nextInt()) < 1 ||  color > 7 ) {
-            System.err.println("Insert a number relative one color");
-            System.out.println("Please insert a number between 1 and seven");
-            scanner.nextLine();
-        }
-        return color;
-    }
-    public void showColors(){
-        //Colors goes between 41 and 47, (change color \u001b[31m) (reset \u001b[0m) everytime reset
-        for (int i = 0; i < COLOR_LABELS.length; i++) {
-            System.out.println(COLOR_LABELS[i] + i);
+        while (true) {
+            input = scanner.nextLine().trim();
+            if (input.length() == 1) {
+                return input.charAt(0);
+            }
+            System.err.println("Please insert exactly one character.");
         }
     }
 
-    public void release (){
+    public String getPlayerName() {
+        System.out.print("\tChoose your username: ");
+        return scanner.nextLine().trim();
+    }
+
+    public int getPlayerColor() {
+        System.out.println("Please choose your color [1-7]:");
+        showColors();
+        return readInteger(1, 7);
+    }
+
+    public void showColors() {
+        for (int i = 0; i < COLOR_LABELS.length; i++) {
+            if (i % 2 == 0) System.out.println();
+            System.out.print(COLOR_LABELS[i] + "[" + (i + 1) + "]\t");
+        }
+        System.out.print("\nColor: ");
+    }
+
+    public int readInteger(int min, int max) {
+        while (true) {
+            String line = scanner.nextLine().trim();
+            try {
+                if (!line.isEmpty()) {
+                    int value = Integer.parseInt(line);
+                    if (value >= min && value <= max) {
+                        return value;
+                    }
+                }
+                System.err.println("Insert a number between " + min + " and " + max);
+            } catch (NumberFormatException e) {
+                System.err.println("Invalid input. Please enter a number.");
+            }
+        }
+    }
+
+    public int getMatchesNumber() {
+        System.out.println("Please enter an odd number of matches [MAX 15]:");
+        while (true) {
+            int val = readInteger(1, 15);
+            if (val % 2 != 0) return val;
+            System.err.println("Number must be ODD (1, 3, 5...).");
+        }
+    }
+
+    public int getIntValue(String name, int defaultValue, int min, int max, boolean indent) {
+        while (true) {
+            System.out.print((indent ? "\t" : "") + name + " [Default: " + defaultValue + "]: ");
+            String input = scanner.nextLine().trim();
+
+            if (input.isEmpty()) {
+                return defaultValue;
+            }
+
+            try {
+                int number = Integer.parseInt(input);
+                if (number >= min && number <= max) {
+                    return number;
+                }
+                System.err.println((indent ? "\t" : "") + "Insert a number between " + min + " and " + max + ".");
+            } catch (NumberFormatException e) {
+                System.err.println((indent ? "\t" : "") + "Invalid input. Please enter a numeric value.");
+            }
+        }
+    }
+
+    public void release() {
         scanner.close();
     }
 }

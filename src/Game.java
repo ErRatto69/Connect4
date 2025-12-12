@@ -1,62 +1,135 @@
+import Utility.ConsoleColors;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
 
-    // Matches list
     private List<Match> matches;
-
-    // Current match index
-    private int currentMatch;
-
-    // Players list
     private List<Player> players;
-
     private InputManager inputManager;
+    private int matchesNumber;
+    private int columns;
+    private int rows;
 
-
-    public Game()
-    {
+    public Game() {
         this.matches = new ArrayList<>();
         this.players = new ArrayList<>();
         this.inputManager = new InputManager();
     }
 
-    public void play()
-    {
-
+    public void play() {
+        for (int i = 0; i < matchesNumber; i++) {
+            ConsoleColors.println("\n=== MATCH " + (i + 1) + " of " + matchesNumber + " ===", ConsoleColors.Colors.CYAN);
+            Match match = new Match(this.columns, this.rows, players, inputManager);
+            matches.add(match);
+        }
+        printFinalResults();
     }
 
-    public void initialize(){
-        System.out.println("Setting up players...");
-        System.out.println("Type '$' to stop creating players");
-        boolean addingPlayers = true;
-        while(addingPlayers){
-            System.out.println("Player "+(players.size()+1));
-            String name = inputManager.getPlayerName();
-            while(name.equals("$")){
-                if (players.size()>=2){
-                    break;
+    private void printFinalResults() {
+        ConsoleColors.println("\n╔══════════════════════════════╗", ConsoleColors.Colors.YELLOW);
+        ConsoleColors.println("║        FINAL RESULTS         ║", ConsoleColors.Colors.YELLOW);
+        ConsoleColors.println("╚══════════════════════════════╝", ConsoleColors.Colors.YELLOW);
+
+        Player overallWinner = null;
+        int maxWins = -1;
+
+        for (Player player : players) {
+            int wins = 0;
+            for (Match m : matches) {
+                if (m.getWinner() == player) {
+                    wins++;
                 }
-                System.out.println("Name must be different from '$'");
-                name = inputManager.getPlayerName();
             }
-            if(players.size() >= 2 && name.equals("$")){
-                addingPlayers = false;
-            }
-            Player player = new Player(name);
-            players.add(player);
-        }
-        for(Player player : players){
-            System.out.println("Setting symbol and color for "+player.getUsername());
-            char symbol = inputManager.getPlayerCharacter();
-//            String color = inputManager.getPlayerColor();
+            System.out.println(player.getUsername() + ": " + wins + " wins");
 
-            player.setCheckerCharacter(symbol);
+            if (wins > maxWins) {
+                maxWins = wins;
+                overallWinner = player;
+            }
+        }
+
+        System.out.println("--------------------------------");
+
+        if (overallWinner != null) {
+            ConsoleColors.println("THE GRAND WINNER IS: " + overallWinner.getUsername().toUpperCase() + "!", ConsoleColors.Colors.GREEN);
         }
     }
 
-    public InputManager getInputManager() {
-        return inputManager;
+    public void initialize() {
+        players.clear();
+
+        boolean addingPlayers = true;
+        System.out.println("Setting up players...");
+        System.out.println("Leave blank to stop creating players!");
+
+        while (addingPlayers) {
+            System.out.println("Player " + (players.size() + 1) + ":");
+            String name = inputManager.getPlayerName();
+
+            if (name.isEmpty()) {
+                if (players.size() >= 2) {
+                    addingPlayers = false;
+                    break;
+                } else {
+                    System.err.println("There must be at least 2 players");
+                    continue;
+                }
+            }
+
+            if (isPlayerUsernameTaken(name)) {
+                ConsoleColors.println("Username '" + name + "' already used.", ConsoleColors.Colors.RED);
+            } else {
+                players.add(new Player(name));
+                ConsoleColors.println("Player " + name + " added!", ConsoleColors.Colors.GREEN);
+            }
+        }
+
+        for (Player player : players) {
+            System.out.print("Configuration for ");
+            ConsoleColors.println(player.getUsername(), ConsoleColors.Colors.MAGENTA);
+
+            char symbol = inputManager.getPlayerCharacter();
+            while (isPlayerSymbolTaken(symbol)) {
+                ConsoleColors.println("Symbol '" + symbol + "' used. Choose another.", ConsoleColors.Colors.RED);
+                symbol = inputManager.getPlayerCharacter();
+            }
+            player.setSymbol(symbol);
+
+            int colorIdx = inputManager.getPlayerColor();
+            ConsoleColors.Colors color = ConsoleColors.Colors.fromInt(colorIdx);
+            while (isPlayerColorTaken(color)) {
+                ConsoleColors.println("Color used. Choose another.", ConsoleColors.Colors.RED);
+                colorIdx = inputManager.getPlayerColor();
+                color = ConsoleColors.Colors.fromInt(colorIdx);
+            }
+            player.setColor(color);
+        }
+
+        this.matchesNumber = inputManager.getMatchesNumber();
+        System.out.println("Board size:");
+        this.columns = inputManager.getIntValue("Columns", 7, 5, 30, true);
+        this.rows = inputManager.getIntValue("Rows", 6, 5, 30, true);
+    }
+
+    private boolean isPlayerUsernameTaken(String name) {
+        for (Player player : players) {
+            if (player.getUsername().equalsIgnoreCase(name)) return true;
+        }
+        return false;
+    }
+
+    private boolean isPlayerSymbolTaken(char symbol) {
+        for (Player player : players) {
+            if (player.getSymbol() == symbol) return true;
+        }
+        return false;
+    }
+
+    private boolean isPlayerColorTaken(ConsoleColors.Colors color) {
+        for (Player player : players) {
+            if (player.getColor() == color) return true;
+        }
+        return false;
     }
 }
