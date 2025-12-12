@@ -23,6 +23,37 @@ public class Game {
             Match match = new Match(this.columns, this.rows, players, inputManager);
             matches.add(match);
         }
+        printFinalResults();
+    }
+
+    private void printFinalResults() {
+        ConsoleColors.println("\n╔══════════════════════════════╗", ConsoleColors.Colors.YELLOW);
+        ConsoleColors.println("║        FINAL RESULTS         ║", ConsoleColors.Colors.YELLOW);
+        ConsoleColors.println("╚══════════════════════════════╝", ConsoleColors.Colors.YELLOW);
+
+        Player overallWinner = null;
+        int maxWins = -1;
+
+        for (Player player : players) {
+            int wins = 0;
+            for (Match m : matches) {
+                if (m.getWinner() == player) {
+                    wins++;
+                }
+            }
+            System.out.println(player.getUsername() + ": " + wins + " wins");
+
+            if (wins > maxWins) {
+                maxWins = wins;
+                overallWinner = player;
+            }
+        }
+
+        System.out.println("--------------------------------");
+
+        if (overallWinner != null) {
+            ConsoleColors.println("THE GRAND WINNER IS: " + overallWinner.getUsername().toUpperCase() + "!", ConsoleColors.Colors.GREEN);
+        }
     }
 
     public void initialize() {
@@ -30,6 +61,7 @@ public class Game {
 
         boolean addingPlayers = true;
         System.out.println("Setting up players...");
+        System.out.println("Leave blank to stop creating players!");
 
         while (addingPlayers) {
             System.out.println("Player " + (players.size() + 1) + ":");

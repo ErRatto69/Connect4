@@ -18,7 +18,9 @@ public class GameBoard {
     }
 
     public boolean isColumnFull(int column) {
-        if (column < 0 || column >= this.columns) return true; // Safety check
+        if (column < 0 || column >= this.columns) {
+            return true;
+        }
         return this.board.get(column).size() >= this.rows;
     }
 
@@ -30,17 +32,89 @@ public class GameBoard {
         return columns;
     }
 
-    public boolean checkWinConditions(Player player) {
-        return checkRows(player) || checkColumns(player) || checkDiagonals(player);
+    public boolean checkWinConditions(int lastCol) {
+        int lastRow = this.board.get(lastCol).size() - 1;
+        Player player = this.board.get(lastCol).get(lastRow);
+
+        return checkVertical(lastCol, lastRow, player) || checkHorizontal(lastCol, lastRow, player) || checkDiagonals(lastCol, lastRow, player);
     }
-    public boolean checkRows(Player player) {
-        return true;
+
+    private Player getPlayerAt(int c, int r) {
+        if (c < 0 || c >= this.columns) {
+            return null;
+        }
+
+        List<Player> columnList = this.board.get(c);
+        if (r < 0 || r >= columnList.size()) {
+            return null;
+        }
+
+        return columnList.get(r);
     }
-    public boolean checkColumns(Player player) {
-        return true;
+
+    private boolean checkVertical(int col, int row, Player player) {
+        if (row < 3) {
+            return false;
+        }
+
+        int count = 1;
+        for (int i = 1; i < 4; i++) {
+            Player neighbor = getPlayerAt(col, row - i);
+            if (neighbor != null && neighbor.getSymbol() == player.getSymbol()) {
+                count++;
+            } else {
+                break;
+            }
+        }
+        return count >= 4;
     }
-    public boolean checkDiagonals(Player player) {
-        return true;
+
+    private boolean checkHorizontal(int col, int row, Player player) {
+        int count = 1;
+
+        for (int i = 1; i < 4; i++) {
+            Player neighbor = getPlayerAt(col - i, row);
+            if (neighbor != null && neighbor.getSymbol() == player.getSymbol()) {
+                count++;
+            } else {
+                break;
+            }
+        }
+
+        for (int i = 1; i < 4; i++) {
+            Player neighbor = getPlayerAt(col + i, row);
+            if (neighbor != null && neighbor.getSymbol() == player.getSymbol()) {
+                count++;
+            } else {
+                break;
+            }
+        }
+
+        return count >= 4;
+    }
+
+    private boolean checkDiagonals(int col, int row, Player player) {
+        return checkSingleDiagonal(col, row, player, 1, 1) || checkSingleDiagonal(col, row, player, 1, -1);
+    }
+
+    private boolean checkSingleDiagonal(int col, int row, Player player, int deltaCol, int deltaRow) {
+        int count = 1;
+
+        for (int i = 1; i < 4; i++) {
+            Player neighbor = getPlayerAt(col + (i * deltaCol), row + (i * deltaRow));
+            if (neighbor != null && neighbor.getSymbol() == player.getSymbol()) {
+                count++;
+            } else { break; }
+        }
+
+        for (int i = 1; i < 4; i++) {
+            Player neighbor = getPlayerAt(col - (i * deltaCol), row - (i * deltaRow));
+            if (neighbor != null && neighbor.getSymbol() == player.getSymbol()) {
+                count++;
+            } else { break; }
+        }
+
+        return count >= 4;
     }
 
     public String getBoardString() {

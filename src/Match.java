@@ -6,6 +6,7 @@ public class Match {
     private List<Player> players;
     private InputManager inputManager;
     private boolean running;
+    private Player winner;
 
     public Match(int columns, int rows, List<Player> players, InputManager inputManager) {
         this.board = new GameBoard(columns, rows);
@@ -37,6 +38,14 @@ public class Match {
 
                 board.addChecker(player, column);
 
+                if (board.checkWinConditions(column)){
+                    this.winner = player;
+                    ConsoleColors.println(player.getUsername()+" VINCE IL MATCH!", ConsoleColors.Colors.GREEN);
+                    System.out.println(this.board.getBoardString());
+                    this.running = false;
+                    break;
+                }
+
                 boolean full = true;
                 for(int c=0; c<board.getColumns(); c++){
                     if(!board.isColumnFull(c)) { full = false; break; }
@@ -49,5 +58,9 @@ public class Match {
                 }
             }
         }
+    }
+
+    public Player getWinner() {
+        return winner;
     }
 }
