@@ -1,3 +1,4 @@
+package Connect4;
 import Utility.ConsoleColors;
 
 public class Player{

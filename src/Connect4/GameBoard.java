@@ -1,3 +1,5 @@
+package Connect4;
+
 import Utility.ConsoleColors;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +32,10 @@ public class GameBoard {
 
     public int getColumns() {
         return columns;
+    }
+
+    public int getRows() {
+        return rows;
     }
 
     public boolean checkWinConditions(int lastCol) {
@@ -117,42 +123,89 @@ public class GameBoard {
         return count >= 4;
     }
 
-    public String getBoardString() {
-        StringBuilder sb = new StringBuilder();
+    public int getColumnCheckers(int col){
+        return this.board.get(col).size();
+    }
 
-        sb.append(" ");
+    public String getGhostBoardString(int col, int row, Player ghost) {
+        StringBuilder grid = new StringBuilder();
+        final int DIGIT_FORMAT = 10;
+        grid.append(" ");
 
         for (int k = 1; k <= this.columns; k++) {
-            if (k < 10) {
-                sb.append(" ").append(k).append("  ");
+            if (k < DIGIT_FORMAT) {
+                grid.append(" ").append(k).append("  ");
             } else {
-                sb.append(" ").append(k).append(" ");
+                grid.append(" ").append(k).append(" ");
             }
         }
-        sb.append("\n");
+        grid.append("\n");
 
-        sb.append("╔").append("═══╦".repeat(Math.max(0, this.columns - 1))).append("═══╗\n");
+        grid.append("╔").append("═══╦".repeat(Math.max(0, this.columns - 1))).append("═══╗\n");
 
         for (int i = 0; i < this.rows; i++) {
-            sb.append("║");
-            int rowIndex = (this.rows - 1) - i;
+            grid.append("║");
+            int oppositeIndex = (this.rows - 1) - i;
 
             for (int j = 0; j < this.columns; j++) {
                 List<Player> columnList = board.get(j);
-                if (rowIndex < columnList.size()) {
-                    Player p = columnList.get(rowIndex);
-                    sb.append(" ").append(p.getColor()).append(p.getSymbol()).append(ConsoleColors.Colors.RESET).append(" ║");
+                if (oppositeIndex < columnList.size()) {
+                    Player p = columnList.get(oppositeIndex);
+                    grid.append(" ").append(p.getColor()).append(p.getSymbol()).append(ConsoleColors.Colors.RESET).append(" ║");
                 } else {
-                    sb.append("   ║");
+                    if (col == j+1 && row == i+1 ){
+                        grid.append(" ").append(ghost.getColor()).append(ghost.getSymbol()).append(ConsoleColors.Colors.RESET).append(" ║");
+                    }else {
+                        grid.append("   ║");
+                    }
                 }
             }
-            sb.append("\n");
+            grid.append("\n");
             if (i < this.rows - 1) {
-                sb.append("╠").append("═══╬".repeat(Math.max(0, this.columns - 1))).append("═══╣\n");
+                grid.append("╠").append("═══╬".repeat(Math.max(0, this.columns - 1))).append("═══╣\n");
             } else {
-                sb.append("╚").append("═══╩".repeat(Math.max(0, this.columns - 1))).append("═══╝\n");
+                grid.append("╚").append("═══╩".repeat(Math.max(0, this.columns - 1))).append("═══╝\n");
             }
         }
-        return sb.toString();
+        return grid.toString();
+    }
+
+    public String getBoardString() {
+        StringBuilder grid = new StringBuilder();
+        final int DIGIT_FORMAT = 10;
+        grid.append(" ");
+
+        for (int k = 1; k <= this.columns; k++) {
+            if (k < DIGIT_FORMAT) {
+                grid.append(" ").append(k).append("  ");
+            } else {
+                grid.append(" ").append(k).append(" ");
+            }
+        }
+        grid.append("\n");
+
+        grid.append("╔").append("═══╦".repeat(Math.max(0, this.columns - 1))).append("═══╗\n");
+
+        for (int i = 0; i < this.rows; i++) {
+            grid.append("║");
+            int oppositeIndex = (this.rows - 1) - i;
+
+            for (int j = 0; j < this.columns; j++) {
+                List<Player> columnList = board.get(j);
+                if (oppositeIndex < columnList.size()) {
+                    Player p = columnList.get(oppositeIndex);
+                    grid.append(" ").append(p.getColor()).append(p.getSymbol()).append(ConsoleColors.Colors.RESET).append(" ║");
+                } else {
+                    grid.append("   ║");
+                }
+            }
+            grid.append("\n");
+            if (i < this.rows - 1) {
+                grid.append("╠").append("═══╬".repeat(Math.max(0, this.columns - 1))).append("═══╣\n");
+            } else {
+                grid.append("╚").append("═══╩".repeat(Math.max(0, this.columns - 1))).append("═══╝\n");
+            }
+        }
+        return grid.toString();
     }
 }

@@ -10,7 +10,7 @@ public class ConsoleColors {
         BLUE("\u001B[34m"),
         MAGENTA("\u001B[35m"),
         CYAN("\u001B[36m"),
-        WHITE("\u001B[37m");
+        WHITE("\u001B[38m");
 
         private final String code;
 

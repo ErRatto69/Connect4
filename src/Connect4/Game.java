@@ -1,3 +1,6 @@
+package Connect4;
+
+import Utility.Animation;
 import Utility.ConsoleColors;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +30,10 @@ public class Game {
     }
 
     private void printFinalResults() {
-        ConsoleColors.println("\n╔══════════════════════════════╗", ConsoleColors.Colors.YELLOW);
-        ConsoleColors.println("║        FINAL RESULTS         ║", ConsoleColors.Colors.YELLOW);
-        ConsoleColors.println("╚══════════════════════════════╝", ConsoleColors.Colors.YELLOW);
+        Animation.typeWriter("\n╔══════════════════════════════╗\n║        FINAL RESULTS         ║\n╚══════════════════════════════╝", ConsoleColors.Colors.YELLOW,50);
+//        ConsoleColors.println("\n╔══════════════════════════════╗", ConsoleColors.Colors.YELLOW);
+//        ConsoleColors.println("║        FINAL RESULTS         ║", ConsoleColors.Colors.YELLOW);
+//        ConsoleColors.println("╚══════════════════════════════╝", ConsoleColors.Colors.YELLOW);
 
         Player overallWinner = null;
         int maxWins = -1;
@@ -56,6 +60,19 @@ public class Game {
         }
     }
 
+    public void initializeTEST(){
+        players.clear();
+        players.add(new Player("Albert"));
+        players.add(new Player("Hermano"));
+        players.get(0).setColor(ConsoleColors.Colors.YELLOW);
+        players.get(0).setSymbol('X');
+        players.get(1).setColor(ConsoleColors.Colors.BLUE);
+        players.get(1).setSymbol('#');
+
+        matchesNumber = 1;
+        columns = 7;
+        rows = 6;
+    }
     public void initialize() {
         players.clear();
 
@@ -72,7 +89,7 @@ public class Game {
                     addingPlayers = false;
                     break;
                 } else {
-                    System.err.println("There must be at least 2 players");
+                    ConsoleColors.println("There must be at least 2 players",ConsoleColors.Colors.RED);
                     continue;
                 }
             }

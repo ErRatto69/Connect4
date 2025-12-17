@@ -1,3 +1,6 @@
+package Connect4;
+
+import Utility.Animation;
 import Utility.ConsoleColors;
 import java.util.List;
 
@@ -36,6 +39,7 @@ public class Match {
                     }
                 }
 
+                Animation.DropChecker(board, column+1, player);
                 board.addChecker(player, column);
 
                 if (board.checkWinConditions(column)){

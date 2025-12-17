@@ -1,4 +1,7 @@
+package Connect4;
+
 import Utility.ConsoleColors;
+import Utility.Animation;
 
 public class Menu {
     private final InputManager inputManager;
@@ -14,6 +17,7 @@ public class Menu {
         boolean running = true;
 
         while (running) {
+//            Animation.clearScreen();
             printHeader();
             printOptions();
 
@@ -21,9 +25,11 @@ public class Menu {
 
             switch (choice) {
                 case 1:
+//                    Animation.clearScreen();
                     startNewGame();
                     break;
                 case 2:
+                    Animation.clearScreen();
                     showCredits();
                     break;
                 case 3:
@@ -39,6 +45,7 @@ public class Menu {
     private void startNewGame() {
         ConsoleColors.println("\n--- GAME START ---", ConsoleColors.Colors.GREEN);
         game.initialize();
+//        game.initializeTEST();
         game.play();
     }
 
@@ -52,17 +59,10 @@ public class Menu {
     }
 
     private void printHeader() {
-        System.out.println("\n");
-        ConsoleColors.println("╔══════════════════════════════╗", ConsoleColors.Colors.BLUE);
-        ConsoleColors.println("║         CONNECT FOUR         ║", ConsoleColors.Colors.BLUE);
-        ConsoleColors.println("╚══════════════════════════════╝", ConsoleColors.Colors.BLUE);
+        Animation.typeWriter("\n╔══════════════════════════════╗\n║         CONNECT FOUR         ║\n╚══════════════════════════════╝", ConsoleColors.Colors.BLUE,30);
     }
 
     private void printOptions() {
-        System.out.println("Seleziona un'opzione:");
-        System.out.println("1. Play");
-        System.out.println("2. Credits");
-        System.out.println("3. Quit");
-        System.out.print("> ");
+        Animation.typeWriter("Select an option\n1. Play\n2. Credits\n3. Quit\n> ", ConsoleColors.Colors.WHITE,7,false);
     }
 }
