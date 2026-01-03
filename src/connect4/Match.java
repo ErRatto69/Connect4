@@ -1,7 +1,8 @@
-package Connect4;
+package connect4;
 
-import Utility.Animation;
-import Utility.ConsoleColors;
+import bot.BotAlgorithm;
+import utility.Animation;
+import utility.ConsoleColors;
 import java.util.List;
 
 public class Match {
@@ -23,20 +24,23 @@ public class Match {
         while (running) {
             for (Player player : players) {
                 System.out.println(board.getBoardString());
-                System.out.println("Turn of " + player.getUsername() + " (" + player.getSymbol() + ")");
-
                 int column = 0;
-                boolean validMove = false;
+                if(!player.isBot()) {
+                    System.out.println("Turn of " + player.getUsername() + " (" + player.getSymbol() + ")");
+                    boolean validMove = false;
 
-                while (!validMove) {
-                    int inputCol = inputManager.getIntValue("Column", 1, 1, board.getColumns(), true);
-                    column = inputCol - 1;
+                    while (!validMove) {
+                        int inputCol = inputManager.getIntValue("Column", 1, 1, board.getColumns(), true);
+                        column = inputCol - 1;
 
-                    if (!board.isColumnFull(column)) {
-                        validMove = true;
-                    } else {
-                        System.err.println("That column is full! Choose another one.");
+                        if (!board.isColumnFull(column)) {
+                            validMove = true;
+                        } else {
+                            System.err.println("That column is full! Choose another one.");
+                        }
                     }
+                }else{
+                    column = BotAlgorithm.getBestMove(board, players, player, player.getDifficulty());
                 }
 
                 Animation.DropChecker(board, column+1, player);

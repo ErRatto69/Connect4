@@ -1,7 +1,7 @@
-package Connect4;
+package connect4;
 
-import Utility.ConsoleColors;
-import Utility.Animation;
+import utility.ConsoleColors;
+import utility.Animation;
 
 public class Menu {
     private final InputManager inputManager;

@@ -1,13 +1,18 @@
-package Connect4;
+package connect4;
 
-import Utility.Animation;
-import Utility.ConsoleColors;
+import utility.Animation;
+import utility.ConsoleColors;
 import java.util.Scanner;
 
 public class InputManager {
     public static final String[] COLOR_LABELS = {
             "Red", "\tGreen", "Yellow", "Blue", "Magenta", "Cyan", "White"
     };
+
+    public static final String[] DIFFICULTY_LABELS = {
+            "Easy", "Medium", "Hard", "Impossible"
+    };
+
     private final Scanner scanner;
 
     public InputManager() {
@@ -40,6 +45,12 @@ public class InputManager {
         return readInteger(1, 7);
     }
 
+    public int getBotDifficulty() {
+        System.out.println("Please choose a difficulty [1-4]:");
+        showDifficulties();
+        return readInteger(1, 4);
+    }
+
     public void showColors() {
         String colors = "";
         for (int i = 0; i < COLOR_LABELS.length; i++) {
@@ -47,6 +58,15 @@ public class InputManager {
         }
         Animation.typeWriter(colors, ConsoleColors.Colors.RESET,7,false);
         System.out.print("\nColor: ");
+    }
+
+    public void showDifficulties() {
+        String difficulties = "";
+        for (int i = 0; i < DIFFICULTY_LABELS.length; i++) {
+            difficulties += DIFFICULTY_LABELS[i] + "[" + (i + 1) + "]"+"\n";
+        }
+        Animation.typeWriter(difficulties, ConsoleColors.Colors.RESET,7,false);
+        System.out.print("\nDifficulties: ");
     }
 
     public int readInteger(int min, int max) {
@@ -92,6 +112,21 @@ public class InputManager {
                 System.err.println((indent ? "\t" : "") + "Insert a number between " + min + " and " + max + ".");
             } catch (NumberFormatException e) {
                 System.err.println((indent ? "\t" : "") + "Invalid input. Please enter a numeric value.");
+            }
+        }
+    }
+
+    public boolean getYesNo(String question, boolean defaultValue, boolean indent){
+        Animation.typeWriter((indent?"\t":"")+question, ConsoleColors.Colors.WHITE,20,false);
+        String input;
+        while (true) {
+            input = scanner.nextLine().trim();
+            if (input.toLowerCase().equals("yes")) {
+                return true;
+            }else if (input.toLowerCase().equals("no")) {
+                return false;
+            }else {
+                Animation.typeWriter("Please choose between yes or no.", ConsoleColors.Colors.RED, 20, true);
             }
         }
     }

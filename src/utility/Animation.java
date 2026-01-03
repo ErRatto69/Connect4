@@ -1,5 +1,5 @@
-package Utility;
-import Connect4.*;
+package utility;
+import connect4.*;
 
 public class Animation {
 

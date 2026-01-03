@@ -1,6 +1,6 @@
-package Connect4;
+package connect4;
 
-import Utility.ConsoleColors;
+import utility.ConsoleColors;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +45,7 @@ public class GameBoard {
         return checkVertical(lastCol, lastRow, player) || checkHorizontal(lastCol, lastRow, player) || checkDiagonals(lastCol, lastRow, player);
     }
 
-    private Player getPlayerAt(int c, int r) {
+    public Player getPlayerAt(int c, int r) {
         if (c < 0 || c >= this.columns) {
             return null;
         }
@@ -124,7 +124,7 @@ public class GameBoard {
     }
 
     public int getColumnCheckers(int col){
-        return this.board.get(col).size();
+        return this.board.get(col-1).size();
     }
 
     public String getGhostBoardString(int col, int row, Player ghost) {

@@ -1,7 +1,9 @@
-package Connect4;
+package connect4;
 
-import Utility.Animation;
-import Utility.ConsoleColors;
+import utility.Animation;
+import utility.ConsoleColors;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,12 +80,17 @@ public class Game {
 
         boolean addingPlayers = true;
         System.out.println("Setting up players...");
-        System.out.println("Leave blank to stop creating players!");
+        ConsoleColors.println("Leave blank to stop creating players!", ConsoleColors.Colors.YELLOW);
+        ConsoleColors.println("[2-7]", ConsoleColors.Colors.CYAN);
 
         while (addingPlayers) {
+            if (players.size() == 7) {
+                addingPlayers = false;
+                ConsoleColors.println("Cant have more than 7 players!", ConsoleColors.Colors.YELLOW);
+                break;
+            }
             System.out.println("Player " + (players.size() + 1) + ":");
             String name = inputManager.getPlayerName();
-
             if (name.isEmpty()) {
                 if (players.size() >= 2) {
                     addingPlayers = false;
@@ -121,6 +128,15 @@ public class Game {
                 color = ConsoleColors.Colors.fromInt(colorIdx);
             }
             player.setColor(color);
+
+            boolean isBot = inputManager.getYesNo("This player is a bot [yes/no]: ", false,true);
+            int difficulty = 1;
+            if (isBot) {
+                player.setBot(true);
+                difficulty = inputManager.getBotDifficulty();
+            }
+
+            player.setDifficulty((byte)difficulty);
         }
 
         this.matchesNumber = inputManager.getMatchesNumber();
