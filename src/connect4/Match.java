@@ -5,6 +5,9 @@ import utility.Animation;
 import utility.ConsoleColors;
 import java.util.List;
 
+/**
+ * The Match class represents a single match between multiple players.
+ */
 public class Match {
     public GameBoard board;
     private List<Player> players;
@@ -20,16 +23,25 @@ public class Match {
         playMatch();
     }
 
+    /**
+     * The playMatch method is responsible for playing the match.
+     */
     private void playMatch() {
+
+        // Keep playing until there is a winner or the board is full
         while (running) {
+            // Cycle through the players
             for (Player player : players) {
                 System.out.println(board.getBoardString());
                 int column = 0;
+
+                // Obtains the next move
                 if(!player.isBot()) {
                     System.out.println("Turn of " + player.getUsername() + " (" + player.getSymbol() + ")");
                     boolean validMove = false;
 
                     while (!validMove) {
+                        // Retrieves the column from the current player
                         int inputCol = inputManager.getIntValue("Column", 1, 1, board.getColumns(), true);
                         column = inputCol - 1;
 
@@ -40,12 +52,17 @@ public class Match {
                         }
                     }
                 }else{
+                    // Retrieves the column from the bot
                     column = BotAlgorithm.getBestMove(board, players, player, player.getDifficulty());
                 }
 
+                // Shows the animation of the checker dropping on the board
                 Animation.DropChecker(board, column+1, player);
+
+                // Adds the checker to the board
                 board.addChecker(player, column);
 
+                // Checks if the player current player won after the move
                 if (board.checkWinConditions(column)){
                     this.winner = player;
                     ConsoleColors.println(player.getUsername()+" VINCE IL MATCH!", ConsoleColors.Colors.GREEN);
@@ -54,9 +71,13 @@ public class Match {
                     break;
                 }
 
+                // Checks if the board is full
                 boolean full = true;
-                for(int c=0; c<board.getColumns(); c++){
-                    if(!board.isColumnFull(c)) { full = false; break; }
+                for(int c = 0; c < board.getColumns(); c++){
+                    if(!board.isColumnFull(c)) {
+                        full = false;
+                        break;
+                    }
                 }
                 if(full){
                     System.out.println(board.getBoardString());
@@ -68,6 +89,10 @@ public class Match {
         }
     }
 
+    /**
+     * Getter for the winner.
+     * @return The winner of the match.
+     */
     public Player getWinner() {
         return winner;
     }

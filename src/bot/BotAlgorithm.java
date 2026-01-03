@@ -51,7 +51,7 @@ public class BotAlgorithm {
             case 1 -> 1;
             case 2 -> 3;
             case 3 -> 6;
-            case 4 -> 10;
+            case 4 -> 12;
             default -> 2;
         };
     }
@@ -244,6 +244,27 @@ public class BotAlgorithm {
         if (validMoves.length == 0) {
             return -1;
         }
+
+        for (int col : validMoves) {
+            makeImaginaryMove(board, rows, columns, heights, col, (byte) 1);
+            if (evaluateBoard(board, rows, columns, (byte) 1) >= 900000) {
+                undoImaginaryMove(board, rows, columns, heights, col);
+                return col;
+            }
+            undoImaginaryMove(board, rows, columns, heights, col);
+        }
+
+        for (int col : validMoves) {
+            for (byte opponentID = 2; opponentID <= playersList.size(); opponentID++) {
+                makeImaginaryMove(board, rows, columns, heights, col, opponentID);
+                if (evaluateBoard(board, rows, columns, opponentID) >= 900000) {
+                    undoImaginaryMove(board, rows, columns, heights, col);
+                    return col;
+                }
+                undoImaginaryMove(board, rows, columns, heights, col);
+            }
+        }
+
 
         int bestMove = validMoves[0];
         int maxEval = Integer.MIN_VALUE;

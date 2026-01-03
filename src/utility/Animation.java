@@ -3,7 +3,7 @@ import connect4.*;
 
 public class Animation {
 
-    // ATTENZIONE metodo da internet non funziona su certe IDE
+    // Attention plese, questo metodo da internet non funziona su certe ide
     public static void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
@@ -66,7 +66,7 @@ public class Animation {
     public static void DropChecker(GameBoard board, int column, Player player){
         int outputHeight = 2 + (board.getRows() * 2) + 1;
 
-        for (int i = 1; i < board.getColumns()-board.getColumnCheckers(column)-1; i++) {
+        for (int i = 1; i < board.getRows()-board.getColumnCheckers(column); i++) {
             System.out.println(board.getGhostBoardString(column, i, player));
             try {
                 Thread.sleep(200);
