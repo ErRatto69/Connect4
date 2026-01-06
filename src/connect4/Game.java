@@ -2,13 +2,14 @@ package connect4;
 
 import utility.Animation;
 import utility.ConsoleColors;
-
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The Game class is responsible for managing the game play. It sets up the players, configures the game board,
+ * and executes the matches between the players. It also prints the final results of the game.
+ */
 public class Game {
-
     private List<Match> matches;
     private List<Player> players;
     private InputManager inputManager;
@@ -22,7 +23,10 @@ public class Game {
         this.inputManager = new InputManager();
     }
 
-    // The play method creates the matches and prints the final results.
+    /**
+     * Plays the game.
+     * Creates the matches and prints the final results.
+     */
     public void play() {
         for (int i = 0; i < matchesNumber; i++) {
             ConsoleColors.println("\n=== MATCH " + (i + 1) + " of " + matchesNumber + " ===", ConsoleColors.Colors.CYAN);
@@ -32,7 +36,9 @@ public class Game {
         printFinalResults();
     }
 
-    // The printFinalResults method prints the final results of the game.
+    /**
+     * Prints the final results of the game.
+     */
     private void printFinalResults() {
         Animation.typeWriter("\n╔══════════════════════════════╗\n║        FINAL RESULTS         ║\n╚══════════════════════════════╝", ConsoleColors.Colors.YELLOW,50);
 
@@ -65,39 +71,8 @@ public class Game {
         }
     }
 
-    public void initializeTEST(){
-        players.clear();
-        players.add(new Player("Albert"));
-        players.add(new Player("Hermano"));
-        players.get(0).setColor(ConsoleColors.Colors.YELLOW);
-        players.get(0).setSymbol('X');
-        players.get(1).setColor(ConsoleColors.Colors.BLUE);
-        players.get(1).setSymbol('#');
-
-        matchesNumber = 1;
-        columns = 7;
-        rows = 6;
-    }
-
-    public void initializeBotsTEST(){
-        players.clear();
-        players.add(new Player("Albert"));
-        players.add(new Player("Hermano"));
-        players.get(0).setColor(ConsoleColors.Colors.YELLOW);
-        players.get(0).setSymbol('X');
-        players.get(0).setBot(true);
-        players.get(0).setDifficulty((byte)4);
-        players.get(1).setColor(ConsoleColors.Colors.BLUE);
-        players.get(1).setSymbol('#');
-        players.get(1).setBot(true);
-        players.get(1).setDifficulty((byte)4);
-        matchesNumber = 1;
-        columns = 7;
-        rows = 6;
-    }
-
     /**
-     * The initialize method is responsible for initializing the game, setting up players and configuring the game board.
+     * Initializes the game, sets up players and configures the game board.
      */
     public void initialize() {
         players.clear();
@@ -146,10 +121,10 @@ public class Game {
             ConsoleColors.println(player.getUsername(), ConsoleColors.Colors.MAGENTA);
 
             // configure player's symbol
-            char symbol = inputManager.getPlayerCharacter();
+            char symbol = inputManager.getPlayerSymbol();
             while (isPlayerSymbolTaken(symbol)) {
                 ConsoleColors.println("Symbol '" + symbol + "' used. Choose another.", ConsoleColors.Colors.RED);
-                symbol = inputManager.getPlayerCharacter();
+                symbol = inputManager.getPlayerSymbol();
             }
             player.setSymbol(symbol);
 
@@ -183,7 +158,12 @@ public class Game {
         this.rows = inputManager.getIntValue("Rows", 6, 5, 30, true);
     }
 
-    // The isPlayerUsernameTaken returns true if there is already a player with the specified username.
+    /**
+     * Checks if the username is already taken by another player.
+     *
+     * @param name The name to check
+     * @return true if there is already a player with the specified name
+     */
     private boolean isPlayerUsernameTaken(String name) {
         // loop through the list of players
         for (Player player : players) {
@@ -194,7 +174,12 @@ public class Game {
         return false;
     }
 
-    // The isPlayerSymbolTaken returns true if there is already a player with the specified symbol.
+    /**
+     * Checks if the symbol is already taken by another player.
+     *
+     * @param symbol The symbol to check
+     * @return true if there is already a player with the specified symbol
+     */
     private boolean isPlayerSymbolTaken(char symbol) {
         // loop through the list of players
         for (Player player : players) {
@@ -205,7 +190,12 @@ public class Game {
         return false;
     }
 
-    // The isPlayerColorTaken returns true if there is already a player with the specified color.
+    /**
+     * Checks if the color is already taken by another player.
+     *
+     * @param color The color to check
+     * @return true if there is already a player with the specified color
+     */
     private boolean isPlayerColorTaken(ConsoleColors.Colors color) {
         // loop through the list of players
         for (Player player : players) {

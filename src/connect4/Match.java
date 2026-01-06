@@ -24,7 +24,8 @@ public class Match {
     }
 
     /**
-     * The playMatch method is responsible for playing the match.
+     * Plays a match between multiple players.
+     * The match is played until there is a winner or the board is full.
      */
     private void playMatch() {
 
@@ -57,7 +58,7 @@ public class Match {
                 }
 
                 // Shows the animation of the checker dropping on the board
-                Animation.DropChecker(board, column+1, player);
+                Animation.dropChecker(board, column+1, player);
 
                 // Adds the checker to the board
                 board.addChecker(player, column);
@@ -89,9 +90,11 @@ public class Match {
         }
     }
 
+
     /**
-     * Getter for the winner.
-     * @return The winner of the match.
+     * Get the winner of the match.
+     *
+     * @return The Player object representing the winner of the match, returns null if the match is still running or no player has won yet.
      */
     public Player getWinner() {
         return winner;
