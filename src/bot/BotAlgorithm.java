@@ -169,9 +169,9 @@ public class BotAlgorithm {
 
     /**
      * Calculates the current height of checkers for each column.
-     * @param board
-     * @param rows
-     * @param cols
+     * @param board The byte board
+     * @param rows The number of rows
+     * @param cols The number of columns
      * @return An array of heights of checkers for each column
      */
     private static int[] getColumnHeights(byte[] board, int rows, int cols){

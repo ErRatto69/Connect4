@@ -57,8 +57,6 @@ public class Menu {
     private void startNewGame() {
         ConsoleColors.println("\n--- GAME START ---", ConsoleColors.Colors.GREEN);
         game.initialize();
-//        game.initializeTEST();
-//        game.initializeBotsTEST();
         game.play();
     }
 
