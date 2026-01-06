@@ -27,6 +27,7 @@ Il cuore del progetto è un'Intelligenza Artificiale basata sull'algoritmo **Min
 ### 🎨 Grafica e UX
 * **Animazioni:** Effetto "caduta" della pedina e testo stile "macchina da scrivere".
 * **Interfaccia Colorata:** Utilizzo intensivo di sequenze di escape ANSI per una UI vibrante nel terminale.
+<img width="274" height="268" alt="{3DC5E9CC-1347-45FC-B06B-BDACD9F19689}" src="https://github.com/user-attachments/assets/415a0ad7-631e-4755-9cbc-1170d4fdb424" />
 
 ## 🧠 L'Intelligenza Artificiale (Il Bot)
 
@@ -51,6 +52,7 @@ La logica del Bot (`BotAlgorithm.java`) è progettata per essere efficiente e sc
 
 ### Compilazione
 Naviga nella cartella radice del progetto ed esegui:
+
 
 ```bash
 javac -d bin connect4/*.java utility/*.java bot/*.java Main.java
@@ -87,6 +89,4 @@ Progettato e Sviluppato da:
 
 *Questo progetto è stato creato a scopo educativo per esplorare algoritmi di ricerca e manipolazione della console in Java.*
 
-### Consigli extra per il tuo repository:
-1.  **Aggiungi uno screenshot:** Siccome è un gioco da console colorato, fai uno screenshot mentre il gioco è in esecuzione (magari con la griglia piena di pedine colorate) e caricalo nella cartella del progetto. Poi sostituisci la sezione "Demo" o aggiungilo dopo la descrizione.
-2.  **File `.gitignore`:** Assicurati di avere un file `.gitignore` che escluda la cartella `bin/` o i file `.class`, per non sporcare il repository.
+
