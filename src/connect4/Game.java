@@ -34,6 +34,7 @@ public class Game {
             matches.add(match);
         }
         printFinalResults();
+        matches.clear();
     }
 
     /**
@@ -138,7 +139,7 @@ public class Game {
             }
             player.setColor(color);
 
-            // configure player as bot and difficulty
+            // configure player as a bot and his difficulty
             boolean isBot = inputManager.getYesNo("This player is a bot [yes/no]: ", false,true);
             int difficulty = 1;
             if (isBot) {

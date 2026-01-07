@@ -12,14 +12,14 @@ public class Match {
     public GameBoard board;
     private List<Player> players;
     private InputManager inputManager;
-    private boolean running;
+    private boolean isRunning;
     private Player winner;
 
     public Match(int columns, int rows, List<Player> players, InputManager inputManager) {
         this.board = new GameBoard(columns, rows);
         this.players = players;
         this.inputManager = inputManager;
-        this.running = true;
+        this.isRunning = true;
         playMatch();
     }
 
@@ -30,7 +30,7 @@ public class Match {
     private void playMatch() {
 
         // Keep playing until there is a winner or the board is full
-        while (running) {
+        while (isRunning) {
             // Cycle through the players
             for (Player player : players) {
                 System.out.println(board.getBoardString());
@@ -68,7 +68,7 @@ public class Match {
                     this.winner = player;
                     ConsoleColors.println(player.getUsername()+" VINCE IL MATCH!", ConsoleColors.Colors.GREEN);
                     System.out.println(this.board.getBoardString());
-                    this.running = false;
+                    this.isRunning = false;
                     break;
                 }
 
@@ -83,7 +83,7 @@ public class Match {
                 if(full){
                     System.out.println(board.getBoardString());
                     ConsoleColors.println("DRAW! No more moves.", ConsoleColors.Colors.YELLOW);
-                    running = false;
+                    isRunning = false;
                     break;
                 }
             }

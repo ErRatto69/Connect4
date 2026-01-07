@@ -140,13 +140,12 @@ public class BotAlgorithm {
      * Simulates a move on the byte array (without creating new objects)
      *
      * @param board The byte board
-     * @param rows The number of rows
      * @param cols The number of columns
      * @param heights The heights of the columns
      * @param col The column to check
      * @param playerID The ID of the player to simulate
      */
-    private static void makeImaginaryMove(byte[] board, int rows, int cols, int[] heights, int col, byte playerID){
+    private static void makeImaginaryMove(byte[] board, int cols, int[] heights, int col, byte playerID){
         int r = heights[col];
         board[r * cols + col] = playerID;
         heights[col]++;
@@ -156,12 +155,11 @@ public class BotAlgorithm {
      * Undoes the simulated move
      *
      * @param board The byte board
-     * @param rows The number of rows
      * @param cols The number of columns
      * @param heights The heights of the columns
      * @param col The column to check
      */
-    private static void undoImaginaryMove(byte[] board, int rows, int cols, int[] heights, int col) {
+    private static void undoImaginaryMove(byte[] board, int cols, int[] heights, int col) {
         heights[col]--;
         int r = heights[col];
         board[r * cols + col] = 0;
@@ -230,8 +228,8 @@ public class BotAlgorithm {
      * @param board The game board
      * @param row The row of the window
      * @param col The column of the window
-     * @param deltaRow The difference in row between cells in the window
-     * @param deltaCol The difference in column between cells in the window
+     * @param deltaRow The row direction
+     * @param deltaCol The col direction
      * @param cols The number of columns in the board
      * @param id The ID of the bot
      * @return The score of the window
@@ -313,11 +311,11 @@ public class BotAlgorithm {
             // Cycles every valid move
             for (int col : validMoves) {
                 // Tries the move
-                makeImaginaryMove(board, rows, cols, heights, col, (byte) 1);
+                makeImaginaryMove(board, cols, heights, col, (byte) 1);
                 // Recursive call
                 int eval = minimax(board, rows, cols, heights, depth - 1, alpha, beta, false);
                 // Undoes the move
-                undoImaginaryMove(board, rows, cols, heights, col);
+                undoImaginaryMove(board, cols, heights, col);
 
                 // Updates alpha
                 if (eval > maxEval){
@@ -336,11 +334,11 @@ public class BotAlgorithm {
             // Cycles every valid move
             for (int col : validMoves) {
                 // Tries the move
-                makeImaginaryMove(board, rows, cols, heights, col, (byte) 2);
+                makeImaginaryMove(board, cols, heights, col, (byte) 2);
                 // Recursive call
                 int eval = minimax(board, rows, cols, heights, depth - 1, alpha, beta, true);
                 // Undoes the move
-                undoImaginaryMove(board, rows, cols, heights, col);
+                undoImaginaryMove(board, cols, heights, col);
 
                 if (eval < minEval){
                     minEval = eval;
@@ -381,23 +379,23 @@ public class BotAlgorithm {
 
         // Immediate Win Check
         for (int col : validMoves) {
-            makeImaginaryMove(board, rows, columns, heights, col, (byte) 1);
+            makeImaginaryMove(board, columns, heights, col, (byte) 1);
             if (evaluateBoard(board, rows, columns, (byte) 1) >= 900000) {
-                undoImaginaryMove(board, rows, columns, heights, col);
+                undoImaginaryMove(board, columns, heights, col);
                 return col;
             }
-            undoImaginaryMove(board, rows, columns, heights, col);
+            undoImaginaryMove(board, columns, heights, col);
         }
 
         // Immediate Loss Check
         for (int col : validMoves) {
             for (byte opponentID = 2; opponentID <= playersList.size(); opponentID++) {
-                makeImaginaryMove(board, rows, columns, heights, col, opponentID);
+                makeImaginaryMove(board, columns, heights, col, opponentID);
                 if (evaluateBoard(board, rows, columns, opponentID) >= 900000) {
-                    undoImaginaryMove(board, rows, columns, heights, col);
+                    undoImaginaryMove(board, columns, heights, col);
                     return col;
                 }
-                undoImaginaryMove(board, rows, columns, heights, col);
+                undoImaginaryMove(board, columns, heights, col);
             }
         }
 
@@ -408,9 +406,9 @@ public class BotAlgorithm {
         int beta = Integer.MAX_VALUE;
 
         for (int col : validMoves) {
-            makeImaginaryMove(board, rows, columns, heights, col, (byte) 1);
+            makeImaginaryMove(board, columns, heights, col, (byte) 1);
             int eval = minimax(board, rows, columns, heights, depth - 1, alpha, beta, false);
-            undoImaginaryMove(board, rows, columns, heights, col);
+            undoImaginaryMove(board, columns, heights, col);
 
             if (eval > maxEval) {
                 maxEval = eval;
